@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Animated, StyleSheet, Text, View, Button } from 'react-native';
+import { Animated, StyleSheet, Text, View, Button, Modal } from 'react-native';
 
 import Header from './components/header';
-import CameraFunc from './components/camera';
 
 let tdGreetHours = new Date().getHours();
-//let tdGreetMins = new Date().getMinutes();
 let greetMsg;
 
 if (tdGreetHours >= 0) {
@@ -21,9 +19,17 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
-      <Header title={'MembaShip'} greet={'Good ' + greetMsg + ' Climber'} />
-      <Button title='Add New Card' onPress={() => setIsCamera(true)} />
-      {/* <CameraFunc visable={isCamera} /> */}
+      <View>
+        <Header title={'MembaShip'} greet={'Good ' + greetMsg + ' Climber'} />
+        <Button title='Add New Card' onPress={() => setIsCamera(true)} />
+      </View>
+
+      <Modal visible={isCamera} animationType='slide'>
+        <View style={styles.camLayout}>
+          <Text>aaa</Text>
+          <Button title='Finished' onPress={() => setIsCamera(false)} />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -31,6 +37,13 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1
+  },
+  camLayout: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 50,
+    padding: 50,
+    borderRadius: 30
   }
 });
 
