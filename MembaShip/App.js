@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Animated, StyleSheet, Text, View, Button, Modal } from 'react-native';
 
 import Header from './components/header';
+import CameraFunc from './components/camera';
 
 let tdGreetHours = new Date().getHours();
 let greetMsg;
@@ -26,6 +27,7 @@ export default function App() {
 
       <Modal visible={isCamera} animationType='slide'>
         <View style={styles.camLayout}>
+          <CameraFunc/>
           <Text>aaa</Text>
           <Button title='Finished' onPress={() => setIsCamera(false)} />
         </View>
