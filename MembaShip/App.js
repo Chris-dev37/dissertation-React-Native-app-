@@ -17,19 +17,26 @@ if (tdGreetHours >= 0) {
 
 export default function App() {
   const [isCamera, setIsCamera] = useState(false);
+  const [allCaptures, setAllCaptures] = useState([]);
+
+  const allCapturesHandler = imagePath => {
+    setAllCaptures([...allCaptures, imagePath]);
+    console.log(allCaptures);
+  }
 
   return (
     <View style={styles.screen}>
       <View>
         <Header title={'MembaShip'} greet={'Good ' + greetMsg + ' Climber'} />
-        <Button title='Add New Card' onPress={() => setIsCamera(true)} />
+        <Button title='Add New Card' onPress={() => setIsCamera(true)} onPress={}/>
       </View>
 
       <Modal visible={isCamera} animationType='slide'>
-        <View style={styles.camLayout}>
-          <CameraFunc/>
-          <Text>aaa</Text>
-          <Button title='Finished' onPress={() => setIsCamera(false)} />
+        <View style={{flex: 2}}>
+          <CameraFunc passImage={allCapturesHandler}/>
+        </View>
+        <View style={styles.btnView}>
+        <Button style={styles.btnStyle} color='green' title='Finished' onPress={() => setIsCamera(false)} />
         </View>
       </Modal>
     </View>
@@ -40,12 +47,14 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1
   },
-  camLayout: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  btnView: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+  },
+  btnStyle: {
     margin: 50,
     padding: 50,
-    borderRadius: 30
+    borderRadius: 60
   }
 });
 
