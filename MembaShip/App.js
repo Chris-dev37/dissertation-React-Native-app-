@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Animated, StyleSheet, Text, View, Button, Modal } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, Modal, FlatList } from 'react-native';
 
 import Header from './components/header';
 import CameraFunc from './components/camera';
+import CardItem from './components/cardItem';
 
 let tdGreetHours = new Date().getHours();
 let greetMsg;
@@ -15,31 +16,43 @@ if (tdGreetHours >= 0) {
   greetMsg = 'Evening';
 };
 
+
 export default function App() {
   const [isCamera, setIsCamera] = useState(false);
+  const [isDisplayCard, setIsDisplayCard] = useState(false)
   const [allCaptures, setAllCaptures] = useState([]);
 
-  const allCapturesHandler = imagePath => {
-    setAllCaptures([...allCaptures, imagePath]);
+  const allCapturesHandler = (imagePath, dis)=> {
+    setAllCaptures([...allCaptures, {image: imagePath, id: dis}]);
     console.log(allCaptures);
+  }
+  const closeCameraModal = bool => {
+    setIsCamera(bool);
+  }
+
+  const closeCardModal = bool => {
+    setIsDisplayCard(bool);
   }
 
   return (
-    <View style={styles.screen}>
-      <View>
-        <Header title={'MembaShip'} greet={'Good ' + greetMsg + ' Climber'} />
-        <Button title='Add New Card' onPress={() => setIsCamera(true)} onPress={}/>
-      </View>
+      <View style={styles.screen}>
+        <View>
+          <Header title='MembaShip' greet={'Good ' + greetMsg + ' Climber'} />
+          <Button title='Add New Card' onPress={() => setIsCamera(true)} />
+        </View>
 
-      <Modal visible={isCamera} animationType='slide'>
-        <View style={{flex: 2}}>
-          <CameraFunc passImage={allCapturesHandler}/>
-        </View>
-        <View style={styles.btnView}>
-        <Button style={styles.btnStyle} color='green' title='Finished' onPress={() => setIsCamera(false)} />
-        </View>
-      </Modal>
-    </View>
+        <FlatList data={allCaptures} renderItem={itemData => <CardItem image={itemData.item.image} discrip={itemData.item.id} />}/>
+        
+        <Modal visible={isCamera} animationType='slide'>
+          <View>
+            <CameraFunc passData={allCapturesHandler} modalFinish={closeCameraModal} />
+          </View>
+        </Modal>
+
+        <Modal visible={isDisplayCard} animationType='fade'>
+          <CardItem cardFinish={closeCardModal}/>
+        </Modal>
+      </View>
   );
 }
 
