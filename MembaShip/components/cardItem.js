@@ -1,16 +1,33 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
 
 const CardItem = props => {
+
+    const deleteCardAlert = (image, id) => {
+        Alert.alert(
+            'Delete Card',
+            'Are you sure want to delete this card?',
+            [
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'OK', onPress: () => props.deleteCard(image, id) },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    const displayPickedCard = (pickedImage, pickedId) => {
+        props.onSelect(pickedImage, pickedId);
+    }
+
     return (
         <View>
-            <TouchableOpacity onPress={props.onSelect} style={styles.item}>
+            <TouchableOpacity onPress={() => displayPickedCard(props.image, props.discrip)} style={styles.item}>
                 <Image source={{ uri: props.image }} style={styles.image} />
                 <View style={styles.infoView}>
                     <Text style={styles.title}>{props.discrip}</Text>
                 </View>
             </TouchableOpacity>
-            {/* <Button title={'Close'} onPress={props.cardFinish}/> */}
+            <Button title='^^Delete^^' color='red' onPress={() => deleteCardAlert(props.image, props.discrip)} />
         </View>
     );
 };

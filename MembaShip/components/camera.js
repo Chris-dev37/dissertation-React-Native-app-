@@ -5,7 +5,6 @@ import * as Permissions from 'expo-permissions';
 
 const CameraFunc = props => {
     const [disValue, setDisValue] = useState();
-    const [captures, setCaptures] = useState();
 
     const disChangeHandler = text => {
         setDisValue(text);
@@ -32,8 +31,9 @@ const CameraFunc = props => {
         const image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
         });
-        setCaptures(image.uri);
         props.passData(image.uri, disValue);
+        setDisValue('');
+        
     }
 
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, Modal, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, Modal, FlatList, Image } from 'react-native';
 
 import Header from './components/header';
 import CameraFunc from './components/camera';
@@ -21,9 +21,11 @@ export default function App() {
   const [isCamera, setIsCamera] = useState(false);
   const [isDisplayCard, setIsDisplayCard] = useState(false)
   const [allCaptures, setAllCaptures] = useState([]);
+  const [pickedImage, setPickedImage] = useState();
+  const [pickedId, setPickedId] = useState();
 
-  const allCapturesHandler = (imagePath, dis)=> {
-    setAllCaptures([...allCaptures, {image: imagePath, id: dis}]);
+  const allCapturesHandler = (imagePath, dis) => {
+    setAllCaptures([...allCaptures, { image: imagePath, id: dis }]);
     console.log(allCaptures);
   }
   const closeCameraModal = bool => {
@@ -34,25 +36,44 @@ export default function App() {
     setIsDisplayCard(bool);
   }
 
+
+  const deleteFunc = (image, id) => {
+    const filter = allCaptures.filter(item => item.image !== image, item => item.id !== id);
+    setAllCaptures(filter);
+  }
+
+  const displayChosenCard = (image, id) => {
+    console.log(image, id);
+    setPickedImage(image);
+    console.log(pickedImage);
+    setPickedId(id);
+    setIsDisplayCard(true);
+
+  }
+
   return (
-      <View style={styles.screen}>
-        <View>
-          <Header title='MembaShip' greet={'Good ' + greetMsg + ' Climber'} />
-          <Button title='Add New Card' onPress={() => setIsCamera(true)} />
-        </View>
-
-        <FlatList data={allCaptures} renderItem={itemData => <CardItem image={itemData.item.image} discrip={itemData.item.id} />}/>
-        
-        <Modal visible={isCamera} animationType='slide'>
-          <View>
-            <CameraFunc passData={allCapturesHandler} modalFinish={closeCameraModal} />
-          </View>
-        </Modal>
-
-        <Modal visible={isDisplayCard} animationType='fade'>
-          <CardItem cardFinish={closeCardModal}/>
-        </Modal>
+    <View style={styles.screen}>
+      <View>
+        <Header title='MembaShip' greet={'Good ' + greetMsg + ' Climber'} />
+        <Button title='Add New Card' onPress={() => setIsCamera(true)} />
       </View>
+
+      <FlatList data={allCaptures} renderItem={itemData => <CardItem image={itemData.item.image} discrip={itemData.item.id} onSelect={displayChosenCard} deleteCard={deleteFunc} />} />
+
+      <Modal visible={isCamera} animationType='slide'>
+        <View>
+          <CameraFunc passData={allCapturesHandler} modalFinish={closeCameraModal} />
+        </View>
+      </Modal>
+
+      <Modal visible={isDisplayCard} animationType='fade'>
+        <View style={{flex: 1}}>
+          <Text>{pickedId}</Text>
+          <Image style={styles.imageStyle} source={{ uri: pickedImage }} />
+          <Button title='Close' onPress={() => setIsDisplayCard(false)} />
+        </View>
+      </Modal>
+    </View>
   );
 }
 
@@ -68,6 +89,12 @@ const styles = StyleSheet.create({
     margin: 50,
     padding: 50,
     borderRadius: 60
+  },
+  imageStyle: {
+    height: '90%',
+    width: '100%',
+    alignSelf: 'center'
+
   }
 });
 
