@@ -3,12 +3,12 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Button, Alert } from '
 
 const CardItem = props => {
 
-    const deleteCardAlert = (image, id) => {
+    const deleteCardAlert = (image, id) => { // Here when the user has selected to delete a card from the app an alert will pop on screen asking if the user is sure. If 'OK' is pressed, the parameters pasted to this function is then passed back to 'App.js' through a prop
         Alert.alert(
             'Delete Card',
             'Are you sure want to delete this card?',
             [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'Cancel', style: 'cancel' },
                 { text: 'OK', onPress: () => props.deleteCard(image, id) },
             ],
             { cancelable: false }
@@ -16,7 +16,7 @@ const CardItem = props => {
     }
 
     const displayPickedCard = (pickedImage, pickedId) => {
-        props.onSelect(pickedImage, pickedId);
+        props.onSelect(pickedImage, pickedId); // Here when a item in the flatlist is pressed the image uri and id is passed back to 'App.js' through a prop and then past into a function that stores them into cosnt's that are then used in the modal for displaying them
     }
 
     return (
@@ -25,9 +25,12 @@ const CardItem = props => {
                 <Image source={{ uri: props.image }} style={styles.image} />
                 <View style={styles.infoView}>
                     <Text style={styles.title}>{props.discrip}</Text>
+                    <View style={styles.deleteBtn}>
+                        <Button style={styles.btn} title='Delete Card' color='red' onPress={() => deleteCardAlert(props.image, props.discrip)} />
+                    </View>
                 </View>
             </TouchableOpacity>
-            <Button title='^^Delete^^' color='red' onPress={() => deleteCardAlert(props.image, props.discrip)} />
+
         </View>
     );
 };
@@ -35,18 +38,18 @@ const CardItem = props => {
 const styles = StyleSheet.create({
     item: {
         borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingVertical: 15,
+        paddingVertical: 25,
         paddingHorizontal: 30,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+
     },
     image: {
-        width: 70,
-        height: 70,
+        width: 80,
+        height: 80,
         borderRadius: 25,
         backgroundColor: 'blue',
-        borderColor: 'red',
+        borderColor: '#ff8c00',
         borderWidth: 1
     },
     infoView: {
@@ -57,8 +60,13 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#666',
-        fontSize: 18,
-        marginBottom: 5
+        fontSize: 22,
+        marginBottom: 5,
+        color: 'black'
+    },
+    deleteBtn: {
+        paddingLeft: 20,
+        alignSelf: 'center'
     }
 })
 

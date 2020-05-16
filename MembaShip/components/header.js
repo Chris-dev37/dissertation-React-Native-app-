@@ -16,9 +16,11 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 100,
         padding: 36,
-        backgroundColor: '#f7287b',
+        backgroundColor: '#ff8c00',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderBottomLeftRadius: 40,
+        borderBottomRightRadius: 40
     },
     headerText: {
         color: 'black',
