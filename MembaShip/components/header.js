@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-
+// Here the title and greet props from 'Header' component are passed here and displayed as text components
 const Header = props => {
     return (
         <View style={styles.header}>
