@@ -46,7 +46,7 @@ const CameraFunc = props => {
 
 
 
-
+// Using the touchablewithoutfeedback component, its possible to add the "keyboard.dismiss" prop which allows the user to close the keyboard by tapping any where on the screen above the keyboard
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.centerScreen}>
